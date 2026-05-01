@@ -176,6 +176,21 @@
       align-items: center;
       gap: 8px;
     }
+    .btn-icon {
+      width: 1.08em;
+      height: 1.08em;
+      flex: 0 0 auto;
+      display: inline-block;
+    }
+    .btn-icon.vector {
+      fill: currentColor;
+    }
+    .btn-icon.external {
+      filter: brightness(0) invert(1);
+    }
+    .btn.primary .btn-icon.external {
+      filter: none;
+    }
     .btn.primary {
       color: #111a35;
       background: #fff5e9;
@@ -249,7 +264,7 @@
 
     .crop-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -262,7 +277,7 @@
 
     .crop-card img {
       width: 100%;
-      aspect-ratio: 1.25 / 1;
+      aspect-ratio: 1 / 1;
       object-fit: cover;
       display: block;
       border-bottom: 1px solid #ece4d9;
@@ -407,7 +422,7 @@
     .method-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0;
+      gap: 16px;
       margin-top: 12px;
       justify-items: center;
     }
@@ -418,6 +433,24 @@
       border-radius: 12px;
       display: block;
       background: #fff;
+    }
+    .method-description {
+      width: 100%;
+      max-width: none;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    .method-description p {
+      margin: 0 0 1rem;
+    }
+    .method-description p:last-child {
+      margin-bottom: 0;
+    }
+    .smallcaps {
+      font-variant: small-caps;
+      letter-spacing: 0.02em;
     }
 
     .method-note {
@@ -522,6 +555,30 @@
       line-height: 1.66;
       overflow-x: auto;
     }
+    .citation-code {
+      position: relative;
+    }
+    .copy-bibtex-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: 1px solid #eadbc8;
+      border-radius: 8px;
+      background: rgba(246, 235, 220, 0.92);
+      color: #20253a;
+      padding: 0.34rem 0.56rem;
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+      z-index: 2;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+    }
+    .copy-bibtex-btn.copied {
+      background: #e06436;
+      border-color: #e06436;
+      color: #fff;
+    }
 
     .reveal {
       opacity: 0;
@@ -535,8 +592,11 @@
     }
 
     @media (max-width: 1060px) {
-      .stats, .seq-grid, .method-grid, .protocol-grid, .download-grid, .crop-grid {
+      .stats, .seq-grid, .method-grid, .protocol-grid, .download-grid {
         grid-template-columns: 1fr;
+      }
+      .crop-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
       .stat { border-right: 0; border-bottom: 1px solid var(--line); }
       .stat:last-child { border-bottom: 0; }
@@ -547,6 +607,14 @@
       .topbar-inner { flex-direction: column; align-items: flex-start; padding: 10px 0; }
       .hero { text-align: left; }
       .hero-links { justify-content: flex-start; }
+      .crop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 480px) {
+      .crop-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -556,7 +624,7 @@
   <header class="hero-band">
     <div class="topbar">
       <div class="wrap topbar-inner">
-        <div class="brand"><span class="mark">SF</span> SenoFlow</div>
+        <div class="brand"><span class="mark">SM</span> <span class="smallcaps">SenoMorph</span></div>
         <nav class="nav" id="nav">
           <a href="#overview">Overview</a>
           <a href="#dataset">Dataset</a>
@@ -573,10 +641,15 @@
       <p class="hero-sub">A benchmark-oriented project page for senescence-conditioned morphology generation with real single-cell nuclei, continuous senescence scores, and generated temporal trajectories.</p>
       <p class="authors">Xiang Zhang, Boxuan Zhang, Haotian Zhuang, Ting Long, Hang Hua, Zhicheng Ji, Heng Fan, Ruixiang Tang, Dongfang Liu</p>
       <div class="hero-links">
-        <a class="btn primary" href="#">📄 Paper</a>
-        <a class="btn" href="#">🤗 Dataset</a>
-        <a class="btn" href="#">GitHub Code</a>
-        <a class="btn" href="#">arXiv</a>
+        <a class="btn primary" href="#">
+          <svg class="btn-icon vector" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3.08a15.8 15.8 0 0 0-1.18-3.02A8.05 8.05 0 0 1 18.9 8ZM12 4.04c.72 1.04 1.32 2.38 1.7 3.96h-3.4c.38-1.58.98-2.92 1.7-3.96ZM4.26 14a8.42 8.42 0 0 1 0-4h3.48a16.93 16.93 0 0 0 0 4H4.26Zm.84 2h3.08c.3 1.12.7 2.14 1.18 3.02A8.05 8.05 0 0 1 5.1 16Zm3.08-8H5.1a8.05 8.05 0 0 1 4.26-3.02A15.8 15.8 0 0 0 8.18 8ZM12 19.96c-.72-1.04-1.32-2.38-1.7-3.96h3.4c-.38 1.58-.98 2.92-1.7 3.96ZM14.12 14H9.88a14.7 14.7 0 0 1 0-4h4.24a14.7 14.7 0 0 1 0 4Zm.52 5.02c.48-.88.88-1.9 1.18-3.02h3.08a8.05 8.05 0 0 1-4.26 3.02ZM16.26 14a16.93 16.93 0 0 0 0-4h3.48a8.42 8.42 0 0 1 0 4h-3.48Z"/>
+          </svg>
+          Project Page
+        </a>
+        <a class="btn" href="#"><img class="btn-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt=""> Dataset</a>
+        <a class="btn" href="#"><img class="btn-icon external" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt=""> GitHub Code</a>
+        <a class="btn" href="#"><img class="btn-icon external" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/arxiv.svg" alt=""> arXiv</a>
       </div>
     </div>
   </header>
@@ -585,11 +658,11 @@
     <section class="section reveal">
       <p class="eyebrow">AT A GLANCE</p>
       <h2>The first benchmark for senescence-conditioned cell morphology generation</h2>
-      <p class="lead" style="max-width:none;">SenoFlow combines 87,391 real single-cell DAPI nuclear crops from three public Xenium tissue panels with continuous senescence scores and computationally generated temporal sequences, creating a benchmark for studying how cell morphology changes along senescence progression.</p>
+      <p class="lead" style="max-width:none;"><span class="smallcaps">SenoMorph</span> combines 87,391 real single-cell DAPI nuclear crops from three public Xenium tissue panels with continuous senescence scores and computationally generated temporal sequences, creating a benchmark for studying how cell morphology changes along senescence progression.</p>
       <div class="stats">
         <article class="stat"><strong data-count="87391" data-suffix="">0</strong><span>Real single-cell images</span></article>
         <article class="stat"><strong data-count="3" data-suffix="">0</strong><span>Xenium tissue panels</span></article>
-        <article class="stat"><strong data-count="15" data-suffix="">0</strong><span>Cell types</span></article>
+        <article class="stat"><strong data-count="10" data-suffix="">0</strong><span>Cell types</span></article>
         <article class="stat"><strong data-count="800" data-suffix="K+">0</strong><span>temporal sequences</span></article>
       </div>
     </section>
@@ -622,6 +695,22 @@
               <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
               <div class="meta-row"><span class="k">Cell Type</span><span class="v">Myeloid</span></div>
               <div class="meta-row"><span class="k">Score</span><span class="v">0.74</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/Prostat_epithelial.png" alt="Real crop: Prostate epithelial">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">N/A</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/Skin_epithelial.png" alt="Real crop: Skin epithelial">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Skin</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">N/A</span></div>
             </div>
           </article>
           <article class="crop-card">
@@ -662,7 +751,18 @@
     <section class="section reveal" id="method">
       <p class="eyebrow">Method</p>
       <h2>Method Summary</h2>
-      <p class="lead" style="max-width:none;">We adopt flow matching as the backbone for senescence-conditioned generation. We propose <strong>SD-Prototype OT</strong> to stabilize transport under heterogeneous cell types with continuous scores and <strong>Continuous-Score Velocity Correction</strong> to preserve biologically consistent trajectory progression.</p>
+      <div class="method-description">
+        <p>
+          We formalize the task as constructing a velocity field
+          \(v_\theta : \mathcal{X} \times [0,1] \times \mathcal{C} \times \mathcal{S} \rightarrow \mathbb{R}^d\),
+          which satisfies two geometric properties: (P1) <em>batch-invariant pairing</em>, which decouples the supervisory signal from minibatch composition; and (P2) <em>Lipschitz-continuous, feature-aligned dynamics</em>, which respect the biological geometry along the senescence axis.
+        </p>
+        <p>
+          On this basis, we introduce <span class="smallcaps">SenoFlow</span>, which consists of two key components:
+          <em>Global Prototype Coupling</em> (GPC), an operator on \(\pi\) that satisfies (P1), and
+          <em>Continuous-score Velocity Correction</em> (CVC), an operator on \(\mathcal{T}\) that satisfies (P2).
+        </p>
+      </div>
       <div class="panel method-grid">
         <div><img src="figures/method.png" alt="method figure"></div>
       </div>
@@ -680,18 +780,15 @@
               <ul>
                 <li><strong>FID</strong>: measures realism of generated images via feature distributions.</li>
                 <li><strong>KID</strong>: complements FID with more reliable estimation under small sample sizes.</li>
-                <li><strong>&rho; (sig)</strong>: mean signed Spearman correlation on significant metric across cell types.</li>
-                <li><strong>Effect</strong>: fraction of real-data morphological shift reproduced by the model.</li>
-                <li><strong>Viol</strong>: mean monotonicity violation ratio.</li>
+                <li><strong>mean |&rho;|</strong>: the mean absolute Spearman correlation between the senescence score and the most significant morphological observable per cell type.</li>
               </ul>
             </article>
             <article class="protocol-card">
-              <h4>Expert Study</h4>
+              <h4>Expert Evaluation</h4>
               <p>Specialists in senescence and cell biology review generated trajectories in a blinded setting. Scores are reported on a 1-5 scale and averaged across experts and evaluated samples.</p>
               <ul style="margin-top:8px;">
                 <li><strong>Realism</strong>: whether generated images resemble real cell nuclei.</li>
                 <li><strong>Fidelity</strong>: whether progression reflects biologically plausible ageing dynamics.</li>
-                <li><strong>preservation</strong>: whether original cell identity is maintained.</li>
               </ul>
             </article>
           </div>
@@ -699,36 +796,80 @@
 
         <div class="block">
           <h3>Benchmark Results</h3>
-          <p class="lead" style="margin-top:0;max-width:none;">We evaluate 13 baselines and our method under the same per-cell-type protocol, grouped into non-FM generators and Flow Matching variants.</p>
+          <p class="lead" style="margin-top:0;max-width:none;">We compare <span class="smallcaps">SenoFlow</span> against eleven baselines covering the major Flow Matching variant and two non-FM generators.</p>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Method</th>
-                  <th>FID</th>
-                  <th>KID (&times;10<sup>3</sup>)</th>
-                  <th>&rho; (sig)</th>
-                  <th>Effect (%)</th>
-                  <th>Viol (%)</th>
-                  <th>Realism</th>
-                  <th>Fidelity</th>
-                  <th>preservation</th>
+                  <th rowspan="2">Method</th>
+                  <th colspan="3">Lung</th>
+                  <th colspan="3">Prostate</th>
+                  <th colspan="3">Skin</th>
+                </tr>
+                <tr>
+                  <th>FID&darr;</th>
+                  <th>KID&darr;</th>
+                  <th>|&rho;| &uarr;</th>
+                  <th>FID&darr;</th>
+                  <th>KID&darr;</th>
+                  <th>|&rho;| &uarr;</th>
+                  <th>FID&darr;</th>
+                  <th>KID&darr;</th>
+                  <th>|&rho;| &uarr;</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td colspan="9" style="font-weight:800;color:#e06436;background:#f7efe3;">NON-FM GENERATORS</td></tr>
-                <tr><td>cVAE</td><td>71.70</td><td>44.29</td><td>0.020</td><td>3.0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>CCDM</td><td>43.20</td><td>21.37</td><td>0.162</td><td>37.0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td colspan="9" style="font-weight:800;color:#e06436;background:#f7efe3;">FLOW MATCHING VARIANTS</td></tr>
-                <tr><td>iMF</td><td>14.16</td><td>3.72</td><td>0.108</td><td>40.0</td><td>0.2</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>MeanFlow</td><td>17.95</td><td>6.05</td><td>0.115</td><td>80.0</td><td>39.3</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>Contrastive FM</td><td>26.24</td><td>10.83</td><td>0.307</td><td>55.7</td><td>38.5</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>Noise-start CFM</td><td>36.81</td><td>17.24</td><td>0.575</td><td>75.6</td><td>33.4</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>Rectified Flow</td><td>61.02</td><td>34.68</td><td>0.057</td><td>40.0</td><td>48.5</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>Untyped OT-CFM</td><td>66.94</td><td>40.15</td><td>0.202</td><td>64.6</td><td>47.1</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>I-CFM (random)</td><td>85.55</td><td>56.81</td><td>0.307</td><td>41.3</td><td>39.2</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr><td>LogitNorm OT-CFM</td><td>92.96</td><td>62.43</td><td>0.070</td><td>48.7</td><td>48.0</td><td>-</td><td>-</td><td>-</td></tr>
-                <tr style="font-weight:800;background:#fff8ee;"><td>Ours</td><td>11.11</td><td>2.14</td><td>0.570</td><td>60.2</td><td>23.2</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td colspan="10" style="font-weight:800;color:#e06436;background:#f7efe3;">NON-FM GENERATORS</td></tr>
+                <tr><td>cVAE</td><td>71.7</td><td>44.3</td><td>2.0</td><td>78.4</td><td>49.1</td><td>3.5</td><td>65.2</td><td>39.8</td><td>4.1</td></tr>
+                <tr><td>CCDM</td><td>43.2</td><td>21.4</td><td>16.2</td><td>49.6</td><td>25.3</td><td>18.7</td><td>39.5</td><td>18.6</td><td>19.4</td></tr>
+                <tr><td colspan="10" style="font-weight:800;color:#e06436;background:#f7efe3;">FLOW MATCHING VARIANTS</td></tr>
+                <tr><td>I-CFM</td><td>85.6</td><td>56.8</td><td>30.7</td><td>92.3</td><td>61.7</td><td>28.4</td><td>78.1</td><td>51.2</td><td>32.5</td></tr>
+                <tr><td>iMF</td><td>14.2</td><td>3.7</td><td>10.8</td><td>16.5</td><td>7.1</td><td>12.1</td><td>13.1</td><td>3.2</td><td>9.6</td></tr>
+                <tr><td>MeanFlow</td><td>18.0</td><td>6.1</td><td>11.5</td><td>20.7</td><td>7.2</td><td>13.0</td><td>16.4</td><td>5.4</td><td>10.8</td></tr>
+                <tr><td>Rectified Flow</td><td>61.0</td><td>34.7</td><td>5.7</td><td>67.8</td><td>38.9</td><td>6.4</td><td>55.3</td><td>30.6</td><td>7.1</td></tr>
+                <tr><td>Noise-start CFM</td><td>36.8</td><td>17.2</td><td>57.5</td><td>41.5</td><td>19.6</td><td>54.8</td><td>33.7</td><td>15.3</td><td>55.2</td></tr>
+                <tr><td>Contrastive FM</td><td>26.2</td><td>10.8</td><td>30.7</td><td>30.4</td><td>12.7</td><td>32.3</td><td>23.8</td><td>9.5</td><td>28.9</td></tr>
+                <tr><td>LogitNorm OT-CFM</td><td>93.0</td><td>62.4</td><td>7.0</td><td>99.7</td><td>67.3</td><td>8.5</td><td>84.6</td><td>56.1</td><td>9.2</td></tr>
+                <tr><td>CellFlow</td><td>138.2</td><td>116.5</td><td>33.7</td><td>151.3</td><td>116.2</td><td>50.7</td><td>213.5</td><td>201.6</td><td>43.7</td></tr>
+                <tr><td>CellFlux</td><td>80.2</td><td>43.1</td><td>1.0</td><td>84.1</td><td>53.0</td><td>14.0</td><td>71.9</td><td>44.0</td><td>19.2</td></tr>
+                <tr style="font-weight:800;background:#fff8ee;"><td><span class="smallcaps">SenoFlow</span> (ours)</td><td>12.2</td><td>2.3</td><td>82.9</td><td>16.1</td><td>6.9</td><td>91.8</td><td>11.3</td><td>2.1</td><td>88.8</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap" style="margin-top:14px;">
+            <table>
+              <thead>
+                <tr>
+                  <th rowspan="2">Method</th>
+                  <th colspan="2">Lung</th>
+                  <th colspan="2">Prostate</th>
+                  <th colspan="2">Skin</th>
+                </tr>
+                <tr>
+                  <th>Realism&uarr;</th>
+                  <th>Fidelity&uarr;</th>
+                  <th>Realism&uarr;</th>
+                  <th>Fidelity&uarr;</th>
+                  <th>Realism&uarr;</th>
+                  <th>Fidelity&uarr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="7" style="font-weight:800;color:#e06436;background:#f7efe3;">NON-FM GENERATORS</td></tr>
+                <tr><td>cVAE</td><td>4</td><td>3</td><td>3</td><td>4</td><td>2</td><td>2</td></tr>
+                <tr><td>CCDM</td><td>3</td><td>1</td><td>2</td><td>3</td><td>3</td><td>2</td></tr>
+                <tr><td colspan="7" style="font-weight:800;color:#e06436;background:#f7efe3;">FLOW MATCHING VARIANTS</td></tr>
+                <tr><td>I-CFM</td><td>4</td><td>3</td><td>3</td><td>4</td><td>1</td><td>1</td></tr>
+                <tr><td>iMF</td><td>5</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td></tr>
+                <tr><td>MeanFlow</td><td>5</td><td>3</td><td>3</td><td>4</td><td>5</td><td>4</td></tr>
+                <tr><td>Rectified Flow</td><td>4</td><td>3</td><td>3</td><td>4</td><td>2</td><td>3</td></tr>
+                <tr><td>Noise-start CFM</td><td>4</td><td>4</td><td>2</td><td>3</td><td>4</td><td>4</td></tr>
+                <tr><td>Contrastive FM</td><td>4</td><td>3</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+                <tr><td>LogitNorm OT-CFM</td><td>4</td><td>3</td><td>2</td><td>3</td><td>1</td><td>3</td></tr>
+                <tr><td>CellFlow</td><td>2</td><td>2</td><td>2</td><td>3</td><td>1</td><td>1</td></tr>
+                <tr><td>CellFlux</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>3</td></tr>
+                <tr style="font-weight:800;background:#fff8ee;"><td><span class="smallcaps">SenoFlow</span> (ours)</td><td>5</td><td>5</td><td>4</td><td>5</td><td>5</td><td>5</td></tr>
               </tbody>
             </table>
           </div>
@@ -764,23 +905,77 @@
       <p class="eyebrow">Citation</p>
       <h2>BibTeX</h2>
       <div class="panel citation">
-<pre><code>@article{zhang2026xensen,
-  title   = {XenSen-Bench: A Multi-Tissue Benchmark for Cellular
-             Senescence from Spatial Transcriptomics},
-  author  = {Xiang Zhang and Boxuan Zhang and Ting Long and
-             Haotian Zhuang and Jason Ji and Ruixiang Tang and
-             Heng Fan and Dongfang Liu},
-  journal = {NeurIPS Datasets and Benchmarks Track},
+        <div class="citation-code">
+          <button class="copy-bibtex-btn" type="button" onclick="copyBibTeX()"><span class="copy-text">Copy</span></button>
+<pre><code id="bibtex-code">@article{zhang2025snapshots,
+  title   = {From Snapshots to Trajectories: Benchmarking Senescence-Conditioned Cell Morphology Generation},
+  author  = {Zhang, Xiang and Zhang, Boxuan and Zhuang, Haotian and Long, Ting and Hua, Hang and Ji, Zhicheng and Fan, Heng and Tang, Ruixiang and Liu, Dongfang},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
   year    = {2026}
 }</code></pre>
+        </div>
       </div>
     </section>
   </main>
 
   <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"]],
+        displayMath: [["\\[", "\\]"]]
+      },
+      svg: {
+        fontCache: "global"
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script>
     const progress = document.getElementById("progress");
     const navLinks = [...document.querySelectorAll(".nav a")];
     const sections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+
+    function copyBibTeX() {
+      const bibtexElement = document.getElementById("bibtex-code");
+      const button = document.querySelector(".copy-bibtex-btn");
+      const copyText = button ? button.querySelector(".copy-text") : null;
+
+      if (!bibtexElement || !button || !copyText) {
+        return;
+      }
+
+      const text = bibtexElement.textContent || "";
+
+      function markCopied() {
+        button.classList.add("copied");
+        copyText.textContent = "Copied";
+        window.setTimeout(() => {
+          button.classList.remove("copied");
+          copyText.textContent = "Copy";
+        }, 2000);
+      }
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(markCopied).catch(() => {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+          markCopied();
+        });
+        return;
+      }
+
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      markCopied();
+    }
 
     function onScroll() {
       const top = window.scrollY;

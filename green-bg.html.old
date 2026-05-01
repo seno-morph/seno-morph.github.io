@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="SenMorph-X | A Multi-Tissue Benchmark for Senescence-Conditioned Cell Morphology Generation">
+  <meta name="description" content="SenMorph-X presents real Xenium cell images, continuous senescence scores, and generated temporal morphology sequences across lung, prostate, and skin tissues.">
+  <meta name="keywords" content="senescence, Xenium, spatial transcriptomics, cell morphology, temporal sequence, flow matching">
+  <meta name="author" content="Your Team">
+  <meta name="theme-color" content="#14452f">
+
+  <title>SenMorph-X | Dataset Project Page</title>
+
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  </noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+</head>
+<body>
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+    <section class="hero dataset-hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="eyebrow">NeurIPS 2026 Datasets &amp; Benchmarks</div>
+          <div class="hero-story">
+            <p class="hero-mini">Dataset + generation benchmark for cellular senescence</p>
+            <h1 class="title publication-title">SenMorph-X: A Multi-Tissue Benchmark for Senescence-Conditioned Cell Morphology Generation</h1>
+            <p class="hero-subtitle">
+              SenMorph-X combines <strong>87,391</strong> real single-cell DAPI nuclear crops from three public Xenium tissue panels
+              with <strong>continuous senescence scores</strong> and <strong>computationally generated temporal sequences</strong>,
+              creating a benchmark for studying how cell morphology changes along senescence progression.
+            </p>
+
+            <div class="hero-ribbon">
+              <span class="hero-tag">3 tissues: lung, prostate, skin</span>
+              <span class="hero-tag">15 cell types</span>
+              <span class="hero-tag">64 x 64 aligned DAPI crops</span>
+              <span class="hero-tag">Flow Matching generation</span>
+            </div>
+
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon hf-icon">🤗</span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-shell video-section">
+      <div class="container is-max-desktop">
+        <div class="video-shell">
+          <div class="video-placeholder">
+            <video controls preload="metadata" poster="">
+              <source src="video.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-shell overview-section">
+      <div class="container is-max-desktop">
+        <div class="overview-abstract">
+          <h2 class="title is-3 overview-title">Abstract</h2>
+          <p class="overview-copy">
+            We collect <strong>87,391 single-cell DAPI nuclear crops</strong> from three publicly available Xenium tissue panels (lung, prostate, skin), and annotate each cell with a <strong>continuous senescence score</strong> computed from its gene expression profile using DeepScence. We introduce SenMorph-X to <strong>generate senescence-conditioned cell morphology with temporal changes</strong> based on the following images.
+          </p>
+        </div>
+        <div class="overview-figure-card">
+          <img class="overview-figure" src="figures/overview.png" alt="SenMorph-X data collection and generation overview">
+        </div>
+      </div>
+    </section>
+  
+    <section class="section section-shell is-soft" id="dataset-demo">
+      <div class="container is-max-desktop">
+        <div class="section-heading">
+          <h2 class="title is-3 demo-title">SenMorph-X Benchmark Demo</h2>
+          <p class="section-copy demo-copy">
+            SenMorph-X contains two complementary data views: <strong>real cross-sectional cell images</strong> from three Xenium tissue panels and computationally <strong>generated temporal sequences</strong> produced by our Flow Matching method.
+          </p>
+        </div>
+
+        <div class="demo-overview-grid">
+          <article class="summary-card">
+            <span class="summary-value">87,391</span>
+            <span class="summary-label">Real single-cell images</span>
+          </article>
+          <article class="summary-card">
+            <span class="summary-value">3</span>
+            <span class="summary-label">Xenium tissue panels</span>
+          </article>
+          <article class="summary-card">
+            <span class="summary-value">15</span>
+            <span class="summary-label">Unique cell types</span>
+          </article>
+          <article class="summary-card">
+            <span class="summary-value">[0,1]</span>
+            <span class="summary-label">Continuous senescence score</span>
+          </article>
+        </div>
+
+        <div class="demo-layout">
+          <div class="demo-main">
+            <div class="demo-header">
+              <div>
+                <p class="section-kicker">Real Dataset View</p>
+                <h3>Cross-sectional single-cell image cards</h3>
+              </div>
+              <div class="filter-pills">
+                <span class="filter-pill active">All tissues</span>
+                <span class="filter-pill">Lung</span>
+                <span class="filter-pill">Prostate</span>
+                <span class="filter-pill">Skin</span>
+              </div>
+            </div>
+
+            <div class="dataset-carousel" data-carousel="real-dataset">
+              <button class="carousel-arrow carousel-arrow-left" type="button" aria-label="Previous dataset images">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-window">
+                <div class="cell-card-grid carousel-track">
+                  <article class="cell-card">
+                    <img class="cell-photo" src="images/image.jpg" alt="Dataset sample 1">
+                    <div class="cell-meta">
+                      <div class="meta-row"><span>Tissue</span><strong>Lung</strong></div>
+                      <div class="meta-row"><span>Cell type</span><strong>Epithelial</strong></div>
+                      <div class="meta-row"><span>Score</span><strong>0.18</strong></div>
+                    </div>
+                  </article>
+                  <article class="cell-card">
+                    <img class="cell-photo" src="images/image2.jpg" alt="Dataset sample 2">
+                    <div class="cell-meta">
+                      <div class="meta-row"><span>Tissue</span><strong>Prostate</strong></div>
+                      <div class="meta-row"><span>Cell type</span><strong>Fibroblast</strong></div>
+                      <div class="meta-row"><span>Score</span><strong>0.47</strong></div>
+                    </div>
+                  </article>
+                  <article class="cell-card">
+                    <img class="cell-photo" src="images/image (1).jpg" alt="Dataset sample 3">
+                    <div class="cell-meta">
+                      <div class="meta-row"><span>Tissue</span><strong>Skin</strong></div>
+                      <div class="meta-row"><span>Cell type</span><strong>Immune</strong></div>
+                      <div class="meta-row"><span>Score</span><strong>0.74</strong></div>
+                    </div>
+                  </article>
+                  <article class="cell-card">
+                    <img class="cell-photo" src="images/image (2).jpg" alt="Dataset sample 4">
+                    <div class="cell-meta">
+                      <div class="meta-row"><span>Tissue</span><strong>Lung</strong></div>
+                      <div class="meta-row"><span>Cell type</span><strong>Endothelial</strong></div>
+                      <div class="meta-row"><span>Score</span><strong>0.91</strong></div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <button class="carousel-arrow carousel-arrow-right" type="button" aria-label="Next dataset images">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sequence-panel">
+          <div class="demo-header">
+            <div>
+              <p class="section-kicker">Generated Temporal View</p>
+              <h3>Senescence progression sequences</h3>
+            </div>
+            <div class="sequence-filters">
+              <div class="sequence-filter-group sequence-dropdown" data-dropdown-group="tissue">
+                <span class="sequence-filter-label">Tissue</span>
+                <button class="sequence-dropdown-toggle" type="button" data-dropdown-toggle="tissue" aria-expanded="false">
+                  <span class="dropdown-value" data-dropdown-value="tissue">All</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="sequence-dropdown-menu" data-dropdown-menu="tissue">
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="tissue" value="all" checked>
+                    <span>All</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="tissue" value="lung">
+                    <span>Lung</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="tissue" value="prostate">
+                    <span>Prostate</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="tissue" value="skin">
+                    <span>Skin</span>
+                  </label>
+                </div>
+              </div>
+              <div class="sequence-filter-group sequence-dropdown" data-dropdown-group="celltype">
+                <span class="sequence-filter-label">Cell type</span>
+                <button class="sequence-dropdown-toggle" type="button" data-dropdown-toggle="celltype" aria-expanded="false">
+                  <span class="dropdown-value" data-dropdown-value="celltype">All</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="sequence-dropdown-menu" data-dropdown-menu="celltype">
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="celltype" value="all" checked>
+                    <span>All</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="celltype" value="epithelial">
+                    <span>Epithelial</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="celltype" value="fibroblast">
+                    <span>Fibroblast</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="celltype" value="immune">
+                    <span>Immune</span>
+                  </label>
+                  <label class="sequence-check">
+                    <input class="sequence-checkbox" type="checkbox" data-filter-group="celltype" value="endothelial">
+                    <span>Endothelial</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sequence-carousel" data-sequence-carousel="temporal">
+            <button class="carousel-arrow carousel-arrow-left sequence-arrow-left" type="button" aria-label="Previous temporal sequences">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="carousel-window">
+              <div class="sequence-board sequence-track">
+                <article class="sequence-row-card" data-sequence-tissue="lung" data-sequence-celltype="epithelial">
+                  <div class="sequence-row-inner">
+                    <div class="source-panel">
+                      <img class="source-photo" src="images/image.jpg" alt="Source cell image 1">
+                      <div class="source-meta">
+                        <div class="source-meta-item"><span>Tissue</span><strong>Lung</strong></div>
+                        <div class="source-meta-item"><span>Cell type</span><strong>Epithelial</strong></div>
+                        <div class="source-meta-item"><span>Input</span><strong>Source image</strong></div>
+                      </div>
+                    </div>
+                    <div class="sequence-divider"></div>
+                    <div class="generated-panel">
+                      <div class="score-direction">
+                        <span>Low senescence score</span>
+                        <div class="score-arrow">
+                          <div class="score-line"></div>
+                          <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <span>High senescence score</span>
+                      </div>
+                      <div class="generated-strip">
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 1"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 2"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 3"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 4"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 5"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 6"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 7"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 8"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 9"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 10"></span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                <article class="sequence-row-card" data-sequence-tissue="prostate" data-sequence-celltype="fibroblast">
+                  <div class="sequence-row-inner">
+                    <div class="source-panel">
+                      <img class="source-photo" src="images/image2.jpg" alt="Source cell image 2">
+                      <div class="source-meta">
+                        <div class="source-meta-item"><span>Tissue</span><strong>Prostate</strong></div>
+                        <div class="source-meta-item"><span>Cell type</span><strong>Fibroblast</strong></div>
+                        <div class="source-meta-item"><span>Input</span><strong>Source image</strong></div>
+                      </div>
+                    </div>
+                    <div class="sequence-divider"></div>
+                    <div class="generated-panel">
+                      <div class="score-direction">
+                        <span>Low senescence score</span>
+                        <div class="score-arrow">
+                          <div class="score-line"></div>
+                          <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <span>High senescence score</span>
+                      </div>
+                      <div class="generated-strip">
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 11"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 12"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 13"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 14"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 15"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 16"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 17"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 18"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 19"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 20"></span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                <article class="sequence-row-card" data-sequence-tissue="skin" data-sequence-celltype="immune">
+                  <div class="sequence-row-inner">
+                    <div class="source-panel">
+                      <img class="source-photo" src="images/image (1).jpg" alt="Source cell image 3">
+                      <div class="source-meta">
+                        <div class="source-meta-item"><span>Tissue</span><strong>Skin</strong></div>
+                        <div class="source-meta-item"><span>Cell type</span><strong>Immune</strong></div>
+                        <div class="source-meta-item"><span>Input</span><strong>Source image</strong></div>
+                      </div>
+                    </div>
+                    <div class="sequence-divider"></div>
+                    <div class="generated-panel">
+                      <div class="score-direction">
+                        <span>Low senescence score</span>
+                        <div class="score-arrow">
+                          <div class="score-line"></div>
+                          <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <span>High senescence score</span>
+                      </div>
+                      <div class="generated-strip">
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 21"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 22"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 23"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 24"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 25"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 26"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 27"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 28"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 29"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 30"></span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                <article class="sequence-row-card" data-sequence-tissue="lung" data-sequence-celltype="endothelial">
+                  <div class="sequence-row-inner">
+                    <div class="source-panel">
+                      <img class="source-photo" src="images/image (2).jpg" alt="Source cell image 4">
+                      <div class="source-meta">
+                        <div class="source-meta-item"><span>Tissue</span><strong>Lung</strong></div>
+                        <div class="source-meta-item"><span>Cell type</span><strong>Endothelial</strong></div>
+                        <div class="source-meta-item"><span>Input</span><strong>Source image</strong></div>
+                      </div>
+                    </div>
+                    <div class="sequence-divider"></div>
+                    <div class="generated-panel">
+                      <div class="score-direction">
+                        <span>Low senescence score</span>
+                        <div class="score-arrow">
+                          <div class="score-line"></div>
+                          <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <span>High senescence score</span>
+                      </div>
+                      <div class="generated-strip">
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 31"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 32"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 33"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 34"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 35"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 36"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (1).jpg" alt="Generated temporal sample 37"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image (2).jpg" alt="Generated temporal sample 38"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image2.jpg" alt="Generated temporal sample 39"></span>
+                        <span class="seq-frame"><img class="seq-photo" src="images/image.jpg" alt="Generated temporal sample 40"></span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <button class="carousel-arrow carousel-arrow-right sequence-arrow-right" type="button" aria-label="Next temporal sequences">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-shell" id="model-zoo">
+      <div class="container is-max-desktop">
+        <div class="section-heading">
+          <h2 class="title is-3 method-title">Method</h2>
+          <p class="section-copy method-copy">
+            We adopt flow matching as the backbone for senescence-conditioned generation. We propose SD-Prototype OT to stabilize transport under heterogeneous cell types with continuous scores and Continuous-Score Velocity Correction to preserve biologically consistent trajectory progression.
+          </p>
+        </div>
+        <div class="method-figure-card">
+          <img class="method-figure" src="figures/method.png" alt="SenMorph-X method overview">
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-shell is-soft" id="benchmarking">
+      <div class="container is-max-desktop">
+        <div class="section-heading">
+          <h2 class="title is-3 method-title">Benchmarking</h2>
+          <p class="section-copy method-copy">
+            We evaluate both non flow matching and flow matching baselines using three key metrics:
+            <strong>FID</strong> for image quality, <strong>Macro |ρ|</strong> for mean absolute Spearman correlation on the primary metric across cell types,
+            and <strong>Effect</strong> for the fraction of real-data shift reproduced.
+          </p>
+        </div>
+
+        <div class="benchmark-card">
+          <div class="benchmark-metrics">
+            <div class="metric-chip"><strong>FID</strong><span>Image quality</span></div>
+            <div class="metric-chip"><strong>Macro |ρ|</strong><span>Mean absolute Spearman correlation</span></div>
+            <div class="metric-chip"><strong>Effect</strong><span>Fraction of real-data shift reproduced</span></div>
+          </div>
+
+          <div class="benchmark-table-wrap">
+            <table class="benchmark-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>FID ↓</th>
+                  <th>Macro |ρ| ↑</th>
+                  <th>Effect (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="benchmark-group-row">
+                  <td colspan="4">Non-FM generators</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">cVAE</a></td>
+                  <td>71.7</td>
+                  <td>0.020</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">CCDM</a></td>
+                  <td>43.2</td>
+                  <td>0.162</td>
+                  <td>37</td>
+                </tr>
+
+                <tr class="benchmark-group-row">
+                  <td colspan="4">Flow Matching variants</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">Noise-start FM</a></td>
+                  <td>41.38</td>
+                  <td>0.541</td>
+                  <td>70</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">I-CFM (random pairs)</a></td>
+                  <td>89.70</td>
+                  <td>0.018</td>
+                  <td>12</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">Untyped OT-CFM</a></td>
+                  <td>71.85</td>
+                  <td>0.177</td>
+                  <td>29</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">Rectified Flow</a></td>
+                  <td>66.55</td>
+                  <td>0.023</td>
+                  <td>39</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">Contrastive FM</a></td>
+                  <td>32.57</td>
+                  <td>0.351</td>
+                  <td>49</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">CellFlux (retrained)</a></td>
+                  <td>22.14</td>
+                  <td>0.040</td>
+                  <td>42</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">Typed-OT FM</a></td>
+                  <td>22.92</td>
+                  <td>0.090</td>
+                  <td>61</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">LogitNorm-FM</a></td>
+                  <td>96.0</td>
+                  <td>0.003</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">VP-OT-CFM</a></td>
+                  <td>121.8</td>
+                  <td>0.001</td>
+                  <td>39</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">Consistency-FM</a></td>
+                  <td>317.2</td>
+                  <td>0.002</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td><a href="#" class="benchmark-link">iMF</a></td>
+                  <td>14.29</td>
+                  <td>0.070</td>
+                  <td>25</td>
+                </tr>
+                <tr class="benchmark-ours-row">
+                  <td><a href="#" class="benchmark-link">Ours</a></td>
+                  <td>17.00</td>
+                  <td>0.734</td>
+                  <td>76</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-shell" id="BibTeX">
+      <div class="container is-max-desktop">
+        <div class="bibtex-block">
+          <div class="bibtex-header">
+            <h2 class="title is-3 method-title">BibTeX</h2>
+            <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+              <i class="fas fa-copy"></i>
+              <span class="copy-text">Copy</span>
+            </button>
+          </div>
+          <pre id="bibtex-code"><code>@article{zhang2026xensen,
+  title   = {XenSen-Bench: A Multi-Tissue Benchmark for Cellular
+             Senescence from Spatial Transcriptomics},
+  author  = {Xiang Zhang and Boxuan Zhang and Ting Long and
+             Haotian Zhuang and Jason Ji and Ruixiang Tang and
+             Heng Fan and Dongfang Liu},
+  journal = {NeurIPS Datasets and Benchmarks Track},
+  year    = {2026}
+}</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

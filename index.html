@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Snapshots to Trajectories: Benchmarking Senescence-Conditioned Cell Morphology Generation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4eee5;
+      --surface: #fffdf8;
+      --surface-2: #f9f3ea;
+      --ink: #1f2330;
+      --muted: #666978;
+      --line: #e5dbcf;
+      --accent: #e06436;
+      --navy: #121a35;
+      --pill: #efe5d8;
+      --shadow: 0 14px 36px rgba(15, 22, 38, 0.08);
+      --radius: 18px;
+      --maxw: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 76px;
+    }
+    body {
+      margin: 0;
+      font-family: "Manrope", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8f3eb 0%, var(--bg) 35%, #f2ebdf 100%);
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      z-index: 120;
+      background: linear-gradient(90deg, var(--accent), #f59e0b);
+    }
+
+    .hero-band {
+      background:
+        radial-gradient(circle at 70% -20%, rgba(245, 158, 11, 0.18), transparent 40%),
+        linear-gradient(105deg, #0b1026 0%, #111a3a 45%, #1a2750 100%);
+      color: #f7f8ff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+      padding-top: 60px;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      background: rgba(249, 243, 234, 0.86);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #20253a;
+    }
+    .mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: #5a5f71;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.84rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav a {
+      text-decoration: none;
+      color: #555b6f;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .nav a:hover,
+    .nav a.active {
+      color: #1f2330;
+      background: var(--pill);
+    }
+
+    .hero {
+      padding: 52px 0 56px;
+      text-align: center;
+    }
+    .kicker {
+      margin: 0 auto 12px;
+      color: #f7dcc7;
+      letter-spacing: 0.06em;
+      font-size: 0.78rem;
+      font-family: "IBM Plex Mono", monospace;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 0.86rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .hero h1 {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.95rem, 4.2vw, 3.55rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .hero-sub {
+      margin: 14px auto 0;
+      max-width: 860px;
+      color: rgba(236, 239, 255, 0.86);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    .authors {
+      margin-top: 14px;
+      color: rgba(247, 248, 255, 0.96);
+      font-weight: 600;
+    }
+
+    .hero-links {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+      padding: 0.72rem 1rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.94rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn.primary {
+      color: #111a35;
+      background: #fff5e9;
+      border-color: #fff5e9;
+    }
+
+    .section {
+      padding: 34px 0;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .section h2 {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.8rem, 3.3vw, 2.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-align: center;
+    }
+    .lead {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.72;
+      max-width: 900px;
+    }
+
+    .stats {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      background: var(--surface);
+    }
+    .stat {
+      padding: 30px 18px;
+      border-right: 1px solid var(--line);
+      text-align: center;
+    }
+    .stat:last-child { border-right: 0; }
+    .stat strong {
+      display: block;
+      color: var(--accent);
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.8rem, 3vw, 2.35rem);
+      margin-bottom: 0.2rem;
+    }
+    .stat span { color: #7a7e8d; font-size: 0.9rem; }
+
+    .panel {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .dataset-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .crop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .crop-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .crop-card img {
+      width: 100%;
+      aspect-ratio: 1.25 / 1;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid #ece4d9;
+    }
+
+    .crop-meta {
+      padding: 12px 12px 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .meta-row .k {
+      color: #6e7381;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta-row .v {
+      color: #2a3042;
+      font-weight: 800;
+      font-size: 0.93rem;
+    }
+
+    .subhead {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #2a3042;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow-x: auto;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+    th, td {
+      text-align: left;
+      padding: 11px 10px;
+      border-bottom: 1px solid #ece4d9;
+      color: #4c5060;
+    }
+    th {
+      color: #2b3042;
+      font-weight: 800;
+      background: #f7f0e5;
+    }
+    tr:last-child td { border-bottom: 0; }
+
+    .thumb {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ddcfbf;
+      display: block;
+    }
+
+    .generated {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-2);
+      padding: 12px;
+    }
+
+    .axis {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #a14e2c;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .axis .line {
+      position: relative;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(224, 100, 54, 0.26), rgba(224, 100, 54, 0.88));
+    }
+    .axis .line::after {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-left: 9px solid #d76539;
+    }
+
+    .seq-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .seq-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 9px;
+    }
+    .seq-strip {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(64px, 1fr));
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .seq-strip img {
+      width: 100%;
+      height: 82px;
+      border-radius: 8px;
+      border: 1px solid #e6ddd1;
+      object-fit: cover;
+    }
+    .seq-meta {
+      font-size: 0.85rem;
+      color: #666978;
+      line-height: 1.55;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-top: 12px;
+      justify-items: center;
+    }
+    .method-grid img {
+      width: 100%;
+      max-width: 980px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      display: block;
+      background: #fff;
+    }
+
+    .method-note {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fff;
+      margin-bottom: 10px;
+    }
+    .method-note h4 {
+      margin: 0 0 0.45rem;
+      font-weight: 800;
+      color: #2a3042;
+      font-size: 1rem;
+    }
+    .method-note p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 0.92rem;
+    }
+
+    .block {
+      border: 1px solid #dfd3c3;
+      border-radius: 12px;
+      background: #fcf7ef;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .block h3 {
+      margin: 0 0 0.5rem;
+      color: #2b3042;
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .protocol-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+    .protocol-card h4 {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+      color: #2a3042;
+    }
+    .protocol-card ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+      line-height: 1.66;
+      font-size: 0.9rem;
+    }
+    .protocol-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.9rem;
+    }
+
+    .download-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .download-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 13px;
+    }
+    .download-card h4 { margin: 0 0 0.45rem; color: #2a3042; }
+    .download-card p { margin: 0 0 0.7rem; color: var(--muted); line-height: 1.6; font-size: 0.9rem; }
+    .download-card a {
+      text-decoration: none;
+      color: #2b3042;
+      font-weight: 700;
+      background: #f6ebdc;
+      border: 1px solid #eadbc8;
+      padding: 0.52rem 0.74rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.86rem;
+    }
+
+    .citation pre {
+      margin: 0;
+      background: #10172e;
+      color: #e2e8ff;
+      border: 1px solid #27345d;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 0.87rem;
+      line-height: 1.66;
+      overflow-x: auto;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      will-change: transform, opacity;
+    }
+    .reveal.inview {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1060px) {
+      .stats, .seq-grid, .method-grid, .protocol-grid, .download-grid, .crop-grid {
+        grid-template-columns: 1fr;
+      }
+      .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stat:last-child { border-bottom: 0; }
+    }
+    @media (max-width: 768px) {
+      html { scroll-padding-top: 112px; }
+      .hero-band { padding-top: 96px; }
+      .topbar-inner { flex-direction: column; align-items: flex-start; padding: 10px 0; }
+      .hero { text-align: left; }
+      .hero-links { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+
+  <header class="hero-band">
+    <div class="topbar">
+      <div class="wrap topbar-inner">
+        <div class="brand"><span class="mark">SF</span> SenoFlow</div>
+        <nav class="nav" id="nav">
+          <a href="#overview">Overview</a>
+          <a href="#dataset">Dataset</a>
+          <a href="#method">Method</a>
+          <a href="#benchmark">Benchmark</a>
+          <a href="#download">Download</a>
+          <a href="#citation">Citation</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="wrap hero reveal" id="overview">
+      <h1>From Snapshots to Trajectories: Benchmarking Senescence-Conditioned Cell Morphology Generation</h1>
+      <p class="hero-sub">A benchmark-oriented project page for senescence-conditioned morphology generation with real single-cell nuclei, continuous senescence scores, and generated temporal trajectories.</p>
+      <p class="authors">Xiang Zhang, Boxuan Zhang, Haotian Zhuang, Ting Long, Hang Hua, Zhicheng Ji, Heng Fan, Ruixiang Tang, Dongfang Liu</p>
+      <div class="hero-links">
+        <a class="btn primary" href="#">📄 Paper</a>
+        <a class="btn" href="#">🤗 Dataset</a>
+        <a class="btn" href="#">GitHub Code</a>
+        <a class="btn" href="#">arXiv</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="section reveal">
+      <p class="eyebrow">AT A GLANCE</p>
+      <h2>The first benchmark for senescence-conditioned cell morphology generation</h2>
+      <p class="lead" style="max-width:none;">SenoFlow combines 87,391 real single-cell DAPI nuclear crops from three public Xenium tissue panels with continuous senescence scores and computationally generated temporal sequences, creating a benchmark for studying how cell morphology changes along senescence progression.</p>
+      <div class="stats">
+        <article class="stat"><strong data-count="87391" data-suffix="">0</strong><span>Real single-cell images</span></article>
+        <article class="stat"><strong data-count="3" data-suffix="">0</strong><span>Xenium tissue panels</span></article>
+        <article class="stat"><strong data-count="15" data-suffix="">0</strong><span>Cell types</span></article>
+        <article class="stat"><strong data-count="800" data-suffix="K+">0</strong><span>temporal sequences</span></article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="dataset">
+      <p class="eyebrow">Dataset</p>
+      <h2>Dataset Demo</h2>
+      <div class="panel dataset-grid">
+        <h3 class="subhead">Real Cell Crops</h3>
+        <div class="crop-grid">
+          <article class="crop-card">
+            <img src="images/Lung_epithelial.png" alt="Real crop: Lung epithelial">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Lung</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.18</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/Lung_tcells.png" alt="Real crop: Lung T cells">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Lung</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">T cells</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.47</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/Prostate_myeloid.png" alt="Real crop: Prostate myeloid">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Myeloid</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.74</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/Skin_myeloid.png" alt="Real crop: Skin myeloid">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Skin</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Myeloid</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.91</span></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="generated">
+          <h3 class="subhead" style="margin-bottom:8px;">Generated Temporal Sequences</h3>
+          <div class="axis">
+            <span>Low senescence score</span>
+            <span class="line"></span>
+            <span>High senescence score</span>
+          </div>
+          <div class="seq-grid">
+            <article class="seq-card">
+              <div class="seq-strip">
+                <img src="images/image.jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image2.jpg" alt="">
+              </div>
+              <div class="seq-meta"><strong>sequence_id:</strong> gen_lung_epi_0001 | <strong>target scores:</strong> 0.00 to 1.00 (10 bins)</div>
+            </article>
+            <article class="seq-card">
+              <div class="seq-strip">
+                <img src="images/image2.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image.jpg" alt="">
+              </div>
+              <div class="seq-meta"><strong>sequence_id:</strong> gen_pro_fib_0002 | <strong>target scores:</strong> 0.00 to 1.00 (10 bins)</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="method">
+      <p class="eyebrow">Method</p>
+      <h2>Method Summary</h2>
+      <p class="lead" style="max-width:none;">We adopt flow matching as the backbone for senescence-conditioned generation. We propose <strong>SD-Prototype OT</strong> to stabilize transport under heterogeneous cell types with continuous scores and <strong>Continuous-Score Velocity Correction</strong> to preserve biologically consistent trajectory progression.</p>
+      <div class="panel method-grid">
+        <div><img src="figures/method.png" alt="method figure"></div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="benchmark">
+      <p class="eyebrow">Benchmark Results</p>
+      <h2>Evaluation Protocol and Benchmark Comparison</h2>
+      <div class="panel">
+        <div class="block">
+          <h3>Evaluation Protocols</h3>
+          <div class="protocol-grid">
+            <article class="protocol-card">
+              <h4>Automatic Metrics</h4>
+              <ul>
+                <li><strong>FID</strong>: measures realism of generated images via feature distributions.</li>
+                <li><strong>KID</strong>: complements FID with more reliable estimation under small sample sizes.</li>
+                <li><strong>&rho; (sig)</strong>: mean signed Spearman correlation on significant metric across cell types.</li>
+                <li><strong>Effect</strong>: fraction of real-data morphological shift reproduced by the model.</li>
+                <li><strong>Viol</strong>: mean monotonicity violation ratio.</li>
+              </ul>
+            </article>
+            <article class="protocol-card">
+              <h4>Expert Study</h4>
+              <p>Specialists in senescence and cell biology review generated trajectories in a blinded setting. Scores are reported on a 1-5 scale and averaged across experts and evaluated samples.</p>
+              <ul style="margin-top:8px;">
+                <li><strong>Realism</strong>: whether generated images resemble real cell nuclei.</li>
+                <li><strong>Fidelity</strong>: whether progression reflects biologically plausible ageing dynamics.</li>
+                <li><strong>preservation</strong>: whether original cell identity is maintained.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="block">
+          <h3>Benchmark Results</h3>
+          <p class="lead" style="margin-top:0;max-width:none;">We evaluate 13 baselines and our method under the same per-cell-type protocol, grouped into non-FM generators and Flow Matching variants.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>FID</th>
+                  <th>KID (&times;10<sup>3</sup>)</th>
+                  <th>&rho; (sig)</th>
+                  <th>Effect (%)</th>
+                  <th>Viol (%)</th>
+                  <th>Realism</th>
+                  <th>Fidelity</th>
+                  <th>preservation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="9" style="font-weight:800;color:#e06436;background:#f7efe3;">NON-FM GENERATORS</td></tr>
+                <tr><td>cVAE</td><td>71.70</td><td>44.29</td><td>0.020</td><td>3.0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>CCDM</td><td>43.20</td><td>21.37</td><td>0.162</td><td>37.0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td colspan="9" style="font-weight:800;color:#e06436;background:#f7efe3;">FLOW MATCHING VARIANTS</td></tr>
+                <tr><td>iMF</td><td>14.16</td><td>3.72</td><td>0.108</td><td>40.0</td><td>0.2</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>MeanFlow</td><td>17.95</td><td>6.05</td><td>0.115</td><td>80.0</td><td>39.3</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Contrastive FM</td><td>26.24</td><td>10.83</td><td>0.307</td><td>55.7</td><td>38.5</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Noise-start CFM</td><td>36.81</td><td>17.24</td><td>0.575</td><td>75.6</td><td>33.4</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Rectified Flow</td><td>61.02</td><td>34.68</td><td>0.057</td><td>40.0</td><td>48.5</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>Untyped OT-CFM</td><td>66.94</td><td>40.15</td><td>0.202</td><td>64.6</td><td>47.1</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>I-CFM (random)</td><td>85.55</td><td>56.81</td><td>0.307</td><td>41.3</td><td>39.2</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr><td>LogitNorm OT-CFM</td><td>92.96</td><td>62.43</td><td>0.070</td><td>48.7</td><td>48.0</td><td>-</td><td>-</td><td>-</td></tr>
+                <tr style="font-weight:800;background:#fff8ee;"><td>Ours</td><td>11.11</td><td>2.14</td><td>0.570</td><td>60.2</td><td>23.2</td><td>-</td><td>-</td><td>-</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="download">
+      <p class="eyebrow">Download</p>
+      <h2>Core Resources</h2>
+      <div class="panel">
+        <div class="download-grid">
+          <article class="download-card">
+            <h4>Dataset</h4>
+            <p>Real nuclei crops + generated temporal sequences with per-cell-type protocol setup.</p>
+            <a href="#">🤗 Hugging Face</a>
+          </article>
+          <article class="download-card">
+            <h4>Code</h4>
+            <p>Training, inference, and evaluation scripts for our method.</p>
+            <a href="#">GitHub Repo</a>
+          </article>
+          <article class="download-card">
+            <h4>Pretrained Models</h4>
+            <p>Released checkpoints for reproducible benchmark comparison and downstream testing.</p>
+            <a href="#">Model Weights</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="citation">
+      <p class="eyebrow">Citation</p>
+      <h2>BibTeX</h2>
+      <div class="panel citation">
+<pre><code>@article{zhang2026xensen,
+  title   = {XenSen-Bench: A Multi-Tissue Benchmark for Cellular
+             Senescence from Spatial Transcriptomics},
+  author  = {Xiang Zhang and Boxuan Zhang and Ting Long and
+             Haotian Zhuang and Jason Ji and Ruixiang Tang and
+             Heng Fan and Dongfang Liu},
+  journal = {NeurIPS Datasets and Benchmarks Track},
+  year    = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const progress = document.getElementById("progress");
+    const navLinks = [...document.querySelectorAll(".nav a")];
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+
+    function onScroll() {
+      const top = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (max > 0 ? (top / max) * 100 : 0) + "%";
+
+      let current = sections[0] ? sections[0].id : "";
+      sections.forEach(sec => { if (top >= sec.offsetTop - 130) current = sec.id; });
+      navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + current));
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("inview"); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+
+    function animateNumber(el) {
+      const target = Number(el.dataset.count || 0);
+      const suffix = el.dataset.suffix || "";
+      const duration = 1000;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const value = Math.floor(target * eased);
+        el.textContent = value.toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const countObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateNumber(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.65 });
+    document.querySelectorAll("[data-count]").forEach(el => countObserver.observe(el));
+
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+  </script>
+</body>
+</html>

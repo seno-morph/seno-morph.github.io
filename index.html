@@ -265,28 +265,30 @@
     .crop-grid {
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 10px;
+      gap: 9px;
+      max-width: 1080px;
+      margin: 0 auto;
     }
 
     .crop-card {
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       background: #fff;
     }
 
     .crop-card img {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 1 / 0.82;
       object-fit: cover;
       display: block;
       border-bottom: 1px solid #ece4d9;
     }
 
     .crop-meta {
-      padding: 12px 12px 10px;
+      padding: 8px 10px 8px;
       display: grid;
-      gap: 8px;
+      gap: 5px;
     }
 
     .meta-row {
@@ -299,7 +301,7 @@
     .meta-row .k {
       color: #6e7381;
       font-family: "IBM Plex Mono", monospace;
-      font-size: 0.76rem;
+      font-size: 0.62rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -307,7 +309,7 @@
     .meta-row .v {
       color: #2a3042;
       font-weight: 800;
-      font-size: 0.93rem;
+      font-size: 0.78rem;
     }
 
     .subhead {
@@ -544,42 +546,6 @@
       font-size: 0.86rem;
     }
 
-    .citation pre {
-      margin: 0;
-      background: #10172e;
-      color: #e2e8ff;
-      border: 1px solid #27345d;
-      border-radius: 12px;
-      padding: 13px;
-      font-size: 0.87rem;
-      line-height: 1.66;
-      overflow-x: auto;
-    }
-    .citation-code {
-      position: relative;
-    }
-    .copy-bibtex-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      border: 1px solid #eadbc8;
-      border-radius: 8px;
-      background: rgba(246, 235, 220, 0.92);
-      color: #20253a;
-      padding: 0.34rem 0.56rem;
-      font: inherit;
-      font-size: 0.76rem;
-      font-weight: 800;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
-    }
-    .copy-bibtex-btn.copied {
-      background: #e06436;
-      border-color: #e06436;
-      color: #fff;
-    }
-
     .reveal {
       opacity: 0;
       transform: translateY(20px);
@@ -627,11 +593,10 @@
         <div class="brand"><span class="mark">SM</span> <span class="smallcaps">SenoMorph</span></div>
         <nav class="nav" id="nav">
           <a href="#overview">Overview</a>
+          <a href="#download">Download</a>
           <a href="#dataset">Dataset</a>
           <a href="#method">Method</a>
           <a href="#benchmark">Benchmark</a>
-          <a href="#download">Download</a>
-          <a href="#citation">Citation</a>
         </nav>
       </div>
     </div>
@@ -656,9 +621,8 @@
 
   <main class="wrap">
     <section class="section reveal">
-      <p class="eyebrow">AT A GLANCE</p>
       <h2>The first benchmark for senescence-conditioned cell morphology generation</h2>
-      <p class="lead" style="max-width:none;"><span class="smallcaps">SenoMorph</span> combines 87,391 real single-cell DAPI nuclear crops from three public Xenium tissue panels with continuous senescence scores and computationally generated temporal sequences, creating a benchmark for studying how cell morphology changes along senescence progression.</p>
+      <p class="lead" style="max-width:none;">Cellular senescence, a state in which cells stop dividing but remain in tissues, drives tissue ageing and is a central readout for the development of new treatments for age-associated diseases. Yet no existing cell morphology benchmark captures this phenotype. In this work, we introduce <strong><span class="smallcaps">SenoMorph</span></strong>, a multi-tissue benchmark of paired DAPI images and transcriptome-derived senescence scores curated from multiple Xenium samples. Alongside, we release a <span class="smallcaps">SenoFlow</span>-generated synthetic companion set of 873,910 score-conditioned cells, providing 10 score-conditioned trajectories per cell.</p>
       <div class="stats">
         <article class="stat"><strong data-count="87391" data-suffix="">0</strong><span>Real single-cell images</span></article>
         <article class="stat"><strong data-count="3" data-suffix="">0</strong><span>Xenium tissue panels</span></article>
@@ -667,64 +631,86 @@
       </div>
     </section>
 
+    <section class="section reveal" id="download">
+      <h2>Core Resources</h2>
+      <div class="panel">
+        <div class="download-grid">
+          <article class="download-card">
+            <h4>Dataset</h4>
+            <p>Real nuclei crops + generated temporal sequences with per-cell-type protocol setup.</p>
+            <a href="#">🤗 Hugging Face</a>
+          </article>
+          <article class="download-card">
+            <h4>Code</h4>
+            <p>Training, inference, and evaluation scripts for our method.</p>
+            <a href="#">GitHub Repo</a>
+          </article>
+          <article class="download-card">
+            <h4>Pretrained Models</h4>
+            <p>Released checkpoints for reproducible benchmark comparison and downstream testing.</p>
+            <a href="#">Model Weights</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section reveal" id="dataset">
-      <p class="eyebrow">Dataset</p>
       <h2>Dataset Demo</h2>
       <div class="panel dataset-grid">
-        <h3 class="subhead">Real Cell Crops</h3>
+        <h3 class="subhead">Real DAPI Images</h3>
         <div class="crop-grid">
           <article class="crop-card">
-            <img src="images/Lung_epithelial.png" alt="Real crop: Lung epithelial">
-            <div class="crop-meta">
-              <div class="meta-row"><span class="k">Tissue</span><span class="v">Lung</span></div>
-              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
-              <div class="meta-row"><span class="k">Score</span><span class="v">0.18</span></div>
-            </div>
-          </article>
-          <article class="crop-card">
-            <img src="images/Lung_tcells.png" alt="Real crop: Lung T cells">
-            <div class="crop-meta">
-              <div class="meta-row"><span class="k">Tissue</span><span class="v">Lung</span></div>
-              <div class="meta-row"><span class="k">Cell Type</span><span class="v">T cells</span></div>
-              <div class="meta-row"><span class="k">Score</span><span class="v">0.47</span></div>
-            </div>
-          </article>
-          <article class="crop-card">
-            <img src="images/Prostate_myeloid.png" alt="Real crop: Prostate myeloid">
-            <div class="crop-meta">
-              <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
-              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Myeloid</span></div>
-              <div class="meta-row"><span class="k">Score</span><span class="v">0.74</span></div>
-            </div>
-          </article>
-          <article class="crop-card">
-            <img src="images/Prostat_epithelial.png" alt="Real crop: Prostate epithelial">
-            <div class="crop-meta">
-              <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
-              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
-              <div class="meta-row"><span class="k">Score</span><span class="v">N/A</span></div>
-            </div>
-          </article>
-          <article class="crop-card">
-            <img src="images/Skin_epithelial.png" alt="Real crop: Skin epithelial">
+            <img src="images/skin_endothelial_score0.182.png" alt="Real DAPI image: Skin endothelial">
             <div class="crop-meta">
               <div class="meta-row"><span class="k">Tissue</span><span class="v">Skin</span></div>
-              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
-              <div class="meta-row"><span class="k">Score</span><span class="v">N/A</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Endothelial</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.182</span></div>
             </div>
           </article>
           <article class="crop-card">
-            <img src="images/Skin_myeloid.png" alt="Real crop: Skin myeloid">
+            <img src="images/lung_macrophage_score0.204.png" alt="Real DAPI image: Lung macrophage">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Lung</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Macrophage</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.204</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/prostate_stromal_score0.360.png" alt="Real DAPI image: Prostate stromal">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Stromal</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.360</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/lung_fibroblast_score0.561.png" alt="Real DAPI image: Lung fibroblast">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Lung</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Fibroblast</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.561</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/skin_tcell_score0.695.png" alt="Real DAPI image: Skin T cell">
             <div class="crop-meta">
               <div class="meta-row"><span class="k">Tissue</span><span class="v">Skin</span></div>
-              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Myeloid</span></div>
-              <div class="meta-row"><span class="k">Score</span><span class="v">0.91</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">T cell</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.695</span></div>
+            </div>
+          </article>
+          <article class="crop-card">
+            <img src="images/prostate_epithelial_score0.807.png" alt="Real DAPI image: Prostate epithelial">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Tissue</span><span class="v">Prostate</span></div>
+              <div class="meta-row"><span class="k">Cell Type</span><span class="v">Epithelial</span></div>
+              <div class="meta-row"><span class="k">Score</span><span class="v">0.807</span></div>
             </div>
           </article>
         </div>
 
         <div class="generated">
-          <h3 class="subhead" style="margin-bottom:8px;">Generated Temporal Sequences</h3>
+          <h3 class="subhead" style="margin-bottom:8px;">Synthetic Score-Conditioned Trajectories</h3>
           <div class="axis">
             <span>Low senescence score</span>
             <span class="line"></span>
@@ -733,15 +719,15 @@
           <div class="seq-grid">
             <article class="seq-card">
               <div class="seq-strip">
-                <img src="images/image.jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image2.jpg" alt="">
+                <img src="images/lung_tcells/trajectory1.png" alt="Lung T cells trajectory 1"><img src="images/lung_tcells/trajectory2.png" alt="Lung T cells trajectory 2"><img src="images/lung_tcells/trajectory3.png" alt="Lung T cells trajectory 3"><img src="images/lung_tcells/trajectory4.png" alt="Lung T cells trajectory 4"><img src="images/lung_tcells/trajectory5.png" alt="Lung T cells trajectory 5"><img src="images/lung_tcells/trajectory6.png" alt="Lung T cells trajectory 6"><img src="images/lung_tcells/trajectory7.png" alt="Lung T cells trajectory 7"><img src="images/lung_tcells/trajectory8.png" alt="Lung T cells trajectory 8"><img src="images/lung_tcells/trajectory9.png" alt="Lung T cells trajectory 9"><img src="images/lung_tcells/trajectory10.png" alt="Lung T cells trajectory 10">
               </div>
-              <div class="seq-meta"><strong>sequence_id:</strong> gen_lung_epi_0001 | <strong>target scores:</strong> 0.00 to 1.00 (10 bins)</div>
+              <div class="seq-meta"><strong>Tissue:</strong> Lung &nbsp;&nbsp;&nbsp;&nbsp; <strong>Cell type:</strong> T cells</div>
             </article>
             <article class="seq-card">
               <div class="seq-strip">
-                <img src="images/image2.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image.jpg" alt=""><img src="images/image (1).jpg" alt=""><img src="images/image (2).jpg" alt=""><img src="images/image2.jpg" alt=""><img src="images/image.jpg" alt="">
+                <img src="images/skin_keratinocyte/trajectory1.png" alt="Skin keratinocyte trajectory 1"><img src="images/skin_keratinocyte/trajectory2.png" alt="Skin keratinocyte trajectory 2"><img src="images/skin_keratinocyte/trajectory3.png" alt="Skin keratinocyte trajectory 3"><img src="images/skin_keratinocyte/trajectory4.png" alt="Skin keratinocyte trajectory 4"><img src="images/skin_keratinocyte/trajectory5.png" alt="Skin keratinocyte trajectory 5"><img src="images/skin_keratinocyte/trajectory6.png" alt="Skin keratinocyte trajectory 6"><img src="images/skin_keratinocyte/trajectory7.png" alt="Skin keratinocyte trajectory 7"><img src="images/skin_keratinocyte/trajectory8.png" alt="Skin keratinocyte trajectory 8"><img src="images/skin_keratinocyte/trajectory9.png" alt="Skin keratinocyte trajectory 9"><img src="images/skin_keratinocyte/trajectory10.png" alt="Skin keratinocyte trajectory 10">
               </div>
-              <div class="seq-meta"><strong>sequence_id:</strong> gen_pro_fib_0002 | <strong>target scores:</strong> 0.00 to 1.00 (10 bins)</div>
+              <div class="seq-meta"><strong>Tissue:</strong> Skin &nbsp;&nbsp;&nbsp;&nbsp; <strong>Cell type:</strong> Keratinocyte</div>
             </article>
           </div>
         </div>
@@ -749,7 +735,6 @@
     </section>
 
     <section class="section reveal" id="method">
-      <p class="eyebrow">Method</p>
       <h2>Method Summary</h2>
       <div class="method-description">
         <p>
@@ -769,7 +754,6 @@
     </section>
 
     <section class="section reveal" id="benchmark">
-      <p class="eyebrow">Benchmark Results</p>
       <h2>Evaluation Protocol and Benchmark Comparison</h2>
       <div class="panel">
         <div class="block">
@@ -877,45 +861,6 @@
       </div>
     </section>
 
-    <section class="section reveal" id="download">
-      <p class="eyebrow">Download</p>
-      <h2>Core Resources</h2>
-      <div class="panel">
-        <div class="download-grid">
-          <article class="download-card">
-            <h4>Dataset</h4>
-            <p>Real nuclei crops + generated temporal sequences with per-cell-type protocol setup.</p>
-            <a href="#">🤗 Hugging Face</a>
-          </article>
-          <article class="download-card">
-            <h4>Code</h4>
-            <p>Training, inference, and evaluation scripts for our method.</p>
-            <a href="#">GitHub Repo</a>
-          </article>
-          <article class="download-card">
-            <h4>Pretrained Models</h4>
-            <p>Released checkpoints for reproducible benchmark comparison and downstream testing.</p>
-            <a href="#">Model Weights</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="citation">
-      <p class="eyebrow">Citation</p>
-      <h2>BibTeX</h2>
-      <div class="panel citation">
-        <div class="citation-code">
-          <button class="copy-bibtex-btn" type="button" onclick="copyBibTeX()"><span class="copy-text">Copy</span></button>
-<pre><code id="bibtex-code">@article{zhang2025snapshots,
-  title   = {From Snapshots to Trajectories: Benchmarking Senescence-Conditioned Cell Morphology Generation},
-  author  = {Zhang, Xiang and Zhang, Boxuan and Zhuang, Haotian and Long, Ting and Hua, Hang and Ji, Zhicheng and Fan, Heng and Tang, Ruixiang and Liu, Dongfang},
-  journal = {arXiv preprint arXiv:XXXX.XXXXX},
-  year    = {2026}
-}</code></pre>
-        </div>
-      </div>
-    </section>
   </main>
 
   <script>
@@ -934,48 +879,6 @@
     const progress = document.getElementById("progress");
     const navLinks = [...document.querySelectorAll(".nav a")];
     const sections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
-
-    function copyBibTeX() {
-      const bibtexElement = document.getElementById("bibtex-code");
-      const button = document.querySelector(".copy-bibtex-btn");
-      const copyText = button ? button.querySelector(".copy-text") : null;
-
-      if (!bibtexElement || !button || !copyText) {
-        return;
-      }
-
-      const text = bibtexElement.textContent || "";
-
-      function markCopied() {
-        button.classList.add("copied");
-        copyText.textContent = "Copied";
-        window.setTimeout(() => {
-          button.classList.remove("copied");
-          copyText.textContent = "Copy";
-        }, 2000);
-      }
-
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(markCopied).catch(() => {
-          const textArea = document.createElement("textarea");
-          textArea.value = text;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textArea);
-          markCopied();
-        });
-        return;
-      }
-
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      markCopied();
-    }
 
     function onScroll() {
       const top = window.scrollY;

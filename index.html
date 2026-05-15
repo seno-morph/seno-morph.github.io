@@ -26,7 +26,7 @@
     * { box-sizing: border-box; }
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 76px;
+      scroll-padding-top: 18px;
     }
     body {
       margin: 0;
@@ -51,71 +51,13 @@
         linear-gradient(105deg, #0b1026 0%, #111a3a 45%, #1a2750 100%);
       color: #f7f8ff;
       border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-      padding-top: 60px;
+      padding-top: 0;
     }
 
     .wrap {
       max-width: var(--maxw);
       margin: 0 auto;
       padding: 0 16px;
-    }
-
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      backdrop-filter: blur(14px);
-      background: rgba(249, 243, 234, 0.86);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .topbar-inner {
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      color: #20253a;
-    }
-    .mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      background: var(--surface-2);
-      border: 1px solid var(--line);
-      color: #5a5f71;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 0.84rem;
-    }
-
-    .nav {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .nav a {
-      text-decoration: none;
-      color: #555b6f;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    .nav a:hover,
-    .nav a.active {
-      color: #1f2330;
-      background: var(--pill);
     }
 
     .hero {
@@ -298,11 +240,36 @@
       font-size: 0.8rem;
       font-weight: 700;
     }
+    .shuffle-button {
+      border: 1px solid #eadbc8;
+      border-radius: 999px;
+      background: #f6ebdc;
+      color: #2b3042;
+      width: 76%;
+      justify-self: center;
+      padding: 0.48rem 0.56rem;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+    .shuffle-button:hover {
+      background: #f9efe3;
+    }
+    .shuffle-button svg {
+      width: 1.12em;
+      height: 1.12em;
+      fill: #7a7e8d;
+    }
 
     .crop-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 9px;
+      grid-template-columns: repeat(8, minmax(76px, 1fr));
+      gap: 7px;
       max-width: 1080px;
       margin: 0 auto;
     }
@@ -317,13 +284,14 @@
     .crop-card img {
       width: 100%;
       aspect-ratio: 1 / 0.82;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
       border-bottom: 1px solid #ece4d9;
+      background: #000;
     }
 
     .crop-meta {
-      padding: 8px 10px 8px;
+      padding: 7px 9px 8px;
       display: grid;
       gap: 5px;
     }
@@ -398,19 +366,134 @@
       background: var(--surface-2);
       padding: 12px;
     }
+    .real-dapi {
+      position: relative;
+    }
+    .real-refresh {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: auto;
+      min-width: 110px;
+      padding-inline: 0.78rem;
+    }
+    .real-refresh,
+    .classification-refresh {
+      border-color: #d9bea0;
+      background: #ead2b3;
+      box-shadow: 0 1px 0 rgba(31, 35, 48, 0.06);
+    }
+    .real-refresh:hover,
+    .classification-refresh:hover {
+      background: #e2c39e;
+      border-color: #cfa77d;
+    }
 
     .classification-demo {
+      position: relative;
       margin-top: 14px;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: var(--surface-2);
       padding: 12px;
     }
-    .classification-placeholder {
-      min-height: 180px;
-      border: 1px dashed #d8c8b7;
+    .classification-body {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(320px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+    .classification-workspace,
+    .classification-results {
+      border: 1px solid var(--line);
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.58);
+      padding: 11px;
+      min-width: 0;
+    }
+    .classification-workspace {
+      display: grid;
+      grid-template-rows: auto auto auto auto;
+      gap: 10px;
+    }
+    .classification-patch {
+      width: 100%;
+      aspect-ratio: 1.85 / 1;
+      border-radius: 8px;
+      border: 1px solid rgba(31, 35, 48, 0.12);
+      object-fit: contain;
+      background: transparent;
+      display: block;
+    }
+    .classification-legend {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      margin-left: 12px;
+      color: #6e7381;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .classification-legend img {
+      width: 1rem;
+      height: 1rem;
+      object-fit: contain;
+      display: block;
+    }
+    .classification-legend.placeholder {
+      visibility: hidden;
+    }
+    .classification-actions,
+    .classification-result-actions {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .workflow-button {
+      border: 1px solid #d9bea0;
+      border-radius: 999px;
+      background: #ead2b3;
+      color: #2a3042;
+      padding: 0.52rem 0.66rem;
+      min-height: 42px;
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.36rem;
+    }
+    .workflow-button:hover {
+      background: #e2c39e;
+      border-color: #cfa77d;
+    }
+    .workflow-button svg {
+      width: 1.05em;
+      height: 1.05em;
+      fill: #6f7482;
+    }
+    .classification-results {
+      display: grid;
+      grid-template-rows: auto auto auto auto;
+      gap: 10px;
+    }
+    .classification-panel-title {
+      margin: 0;
+      color: #2a3042;
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+    .classification-result-box {
+      display: none;
+      color: #9a9188;
+      text-align: center;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .classification-result-actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .axis {
@@ -616,34 +699,6 @@
       font-size: 0.9rem;
     }
 
-    .download-grid {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-    .download-card {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #fff;
-      padding: 13px;
-    }
-    .download-card h4 { margin: 0 0 0.45rem; color: #2a3042; }
-    .download-card p { margin: 0 0 0.7rem; color: var(--muted); line-height: 1.6; font-size: 0.9rem; }
-    .download-card a {
-      text-decoration: none;
-      color: #2b3042;
-      font-weight: 700;
-      background: #f6ebdc;
-      border: 1px solid #eadbc8;
-      padding: 0.52rem 0.74rem;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.86rem;
-    }
-
     .reveal {
       opacity: 0;
       transform: translateY(20px);
@@ -656,7 +711,7 @@
     }
 
     @media (max-width: 1060px) {
-      .stats, .seq-grid, .method-grid, .protocol-grid, .download-grid {
+      .stats, .seq-grid, .method-grid, .protocol-grid {
         grid-template-columns: 1fr;
       }
       .crop-grid {
@@ -666,15 +721,19 @@
       .stat:last-child { border-bottom: 0; }
     }
     @media (max-width: 768px) {
-      html { scroll-padding-top: 112px; }
-      .hero-band { padding-top: 96px; }
-      .topbar-inner { flex-direction: column; align-items: flex-start; padding: 10px 0; }
+      html { scroll-padding-top: 18px; }
       .hero { text-align: left; }
       .hero-links { justify-content: flex-start; }
       .real-dapi-body {
         grid-template-columns: 1fr;
       }
       .filter-panel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .classification-body {
+        grid-template-columns: 1fr;
+      }
+      .classification-actions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .trajectory-demo {
@@ -701,79 +760,17 @@
 </head>
 <body>
   <div class="progress" id="progress"></div>
-
-  <header class="hero-band">
-    <div class="topbar">
-      <div class="wrap topbar-inner">
-        <div class="brand"><span class="mark">SM</span> <span class="smallcaps">SenoMorph</span></div>
-        <nav class="nav" id="nav">
-          <a href="#overview">Overview</a>
-          <a href="#download">Download</a>
-          <a href="#dataset">Dataset</a>
-          <a href="#method">Method</a>
-          <a href="#benchmark">Benchmark</a>
-        </nav>
-      </div>
-    </div>
-
-    <div class="wrap hero reveal" id="overview">
-      <h1>From Snapshots to Trajectories: Benchmarking Senescence-Conditioned Cell Morphology Generation</h1>
-      <p class="hero-sub">A benchmark-oriented project page for senescence-conditioned morphology generation with real single-cell nuclei, continuous senescence scores, and generated temporal trajectories.</p>
-      <p class="authors">Zhicheng Ji, Ruixiang Tang, Dongfang Liu</p>
-      <div class="hero-links">
-        <a class="btn primary" href="#">
-          <svg class="btn-icon vector" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3.08a15.8 15.8 0 0 0-1.18-3.02A8.05 8.05 0 0 1 18.9 8ZM12 4.04c.72 1.04 1.32 2.38 1.7 3.96h-3.4c.38-1.58.98-2.92 1.7-3.96ZM4.26 14a8.42 8.42 0 0 1 0-4h3.48a16.93 16.93 0 0 0 0 4H4.26Zm.84 2h3.08c.3 1.12.7 2.14 1.18 3.02A8.05 8.05 0 0 1 5.1 16Zm3.08-8H5.1a8.05 8.05 0 0 1 4.26-3.02A15.8 15.8 0 0 0 8.18 8ZM12 19.96c-.72-1.04-1.32-2.38-1.7-3.96h3.4c-.38 1.58-.98 2.92-1.7 3.96ZM14.12 14H9.88a14.7 14.7 0 0 1 0-4h4.24a14.7 14.7 0 0 1 0 4Zm.52 5.02c.48-.88.88-1.9 1.18-3.02h3.08a8.05 8.05 0 0 1-4.26 3.02ZM16.26 14a16.93 16.93 0 0 0 0-4h3.48a8.42 8.42 0 0 1 0 4h-3.48Z"/>
-          </svg>
-          Project Page
-        </a>
-        <a class="btn" href="#"><img class="btn-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt=""> Dataset</a>
-        <a class="btn" href="#"><img class="btn-icon external" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt=""> GitHub Code</a>
-        <a class="btn" href="#"><img class="btn-icon external" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/arxiv.svg" alt=""> arXiv</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="section reveal">
-      <h2>The first benchmark for senescence-conditioned cell morphology generation</h2>
-      <p class="lead" style="max-width:none;">Cellular senescence, a state in which cells stop dividing but remain in tissues, drives tissue ageing and is a central readout for the development of new treatments for age-associated diseases. Yet no existing cell morphology benchmark captures this phenotype. In this work, we introduce <strong><span class="smallcaps">SenoMorph</span></strong>, a multi-tissue benchmark of paired DAPI images and transcriptome-derived senescence scores curated from multiple Xenium samples. Alongside, we release a <span class="smallcaps">SenoFlow</span>-generated synthetic companion set of 873,910 score-conditioned cells, providing 10 score-conditioned trajectories per cell.</p>
-      <div class="stats">
-        <article class="stat"><strong data-count="87391" data-suffix="">0</strong><span>Real single-cell images</span></article>
-        <article class="stat"><strong data-count="3" data-suffix="">0</strong><span>Xenium tissue panels</span></article>
-        <article class="stat"><strong data-count="10" data-suffix="">0</strong><span>Cell types</span></article>
-        <article class="stat"><strong data-count="800" data-suffix="K+">0</strong><span>temporal sequences</span></article>
-      </div>
-    </section>
-
-    <section class="section reveal" id="download">
-      <h2>Core Resources</h2>
-      <div class="panel">
-        <div class="download-grid">
-          <article class="download-card">
-            <h4>Dataset</h4>
-            <p>Real nuclei crops + generated temporal sequences with per-cell-type protocol setup.</p>
-            <a href="#">🤗 Hugging Face</a>
-          </article>
-          <article class="download-card">
-            <h4>Code</h4>
-            <p>Training, inference, and evaluation scripts for our method.</p>
-            <a href="#">GitHub Repo</a>
-          </article>
-          <article class="download-card">
-            <h4>Pretrained Models</h4>
-            <p>Released checkpoints for reproducible benchmark comparison and downstream testing.</p>
-            <a href="#">Model Weights</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="dataset">
-      <h2>Dataset Demo</h2>
-      <div class="panel dataset-grid">
+<main class="wrap">
+<section class="section reveal" id="dataset">
+<div class="panel dataset-grid">
         <div class="real-dapi">
           <h3 class="subhead" style="margin-bottom:8px;">Real DAPI Images</h3>
+          <button class="shuffle-button real-refresh" type="button" data-real-shuffle>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.45 5.06 1 1 0 1 0-1.86.74A6 6 0 1 1 12 6c1.3 0 2.5.42 3.48 1.13L13.8 8.8A1 1 0 0 0 14.5 10.5H20a1 1 0 0 0 1-1V4a1 1 0 1 0-2 0v2.1l-1.35.25Z"/>
+            </svg>
+            Refresh
+          </button>
           <div class="real-dapi-body">
             <aside class="filter-panel" aria-label="Real DAPI image filters">
               <div class="filter-field">
@@ -781,7 +778,7 @@
                 <select id="real-tissue-filter" data-real-filter="tissue">
                   <option value="all">All</option>
                   <option value="skin">Skin</option>
-                  <option value="lung">Lung</option>
+                  <option value="lung" selected>Lung</option>
                   <option value="prostate">Prostate</option>
                 </select>
               </div>
@@ -794,11 +791,11 @@
                   <option value="stromal">Stromal</option>
                   <option value="fibroblast">Fibroblast</option>
                   <option value="t cell">T cell</option>
-                  <option value="epithelial">Epithelial</option>
+                  <option value="epithelial" selected>Epithelial</option>
                 </select>
               </div>
             </aside>
-            <div class="crop-grid">
+            <div class="crop-grid" data-real-grid>
             <article class="crop-card" data-tissue="skin" data-celltype="endothelial">
               <img src="images/skin_endothelial_score0.182.png" alt="Real DAPI image: Skin endothelial">
               <div class="crop-meta">
@@ -874,139 +871,53 @@
 
         <div class="classification-demo">
           <h3 class="subhead" style="margin-bottom:8px;">Classification</h3>
-          <div class="classification-placeholder"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="method">
-      <h2>Method Summary</h2>
-      <div class="method-description">
-        <p>
-          We formalize the task as constructing a velocity field
-          \(v_\theta : \mathcal{X} \times [0,1] \times \mathcal{C} \times \mathcal{S} \rightarrow \mathbb{R}^d\),
-          which satisfies two geometric properties: (P1) <em>batch-invariant pairing</em>, which decouples the supervisory signal from minibatch composition; and (P2) <em>Lipschitz-continuous, feature-aligned dynamics</em>, which respect the biological geometry along the senescence axis.
-        </p>
-        <p>
-          On this basis, we introduce <span class="smallcaps">SenoFlow</span>, which consists of two key components:
-          <em>Global Prototype Coupling</em> (GPC), an operator on \(\pi\) that satisfies (P1), and
-          <em>Continuous-score Velocity Correction</em> (CVC), an operator on \(\mathcal{T}\) that satisfies (P2).
-        </p>
-      </div>
-      <div class="panel method-grid">
-        <div><img src="figures/method.png" alt="method figure"></div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="benchmark">
-      <h2>Evaluation Protocol and Benchmark Comparison</h2>
-      <div class="panel">
-        <div class="block">
-          <h3>Evaluation Protocols</h3>
-          <div class="protocol-grid">
-            <article class="protocol-card">
-              <h4>Automatic Metrics</h4>
-              <ul>
-                <li><strong>FID</strong>: measures realism of generated images via feature distributions.</li>
-                <li><strong>KID</strong>: complements FID with more reliable estimation under small sample sizes.</li>
-                <li><strong>mean |&rho;|</strong>: the mean absolute Spearman correlation between the senescence score and the most significant morphological observable per cell type.</li>
-              </ul>
-            </article>
-            <article class="protocol-card">
-              <h4>Expert Evaluation</h4>
-              <p>Specialists in senescence and cell biology review generated trajectories in a blinded setting. Scores are reported on a 1-5 scale and averaged across experts and evaluated samples.</p>
-              <ul style="margin-top:8px;">
-                <li><strong>Realism</strong>: whether generated images resemble real cell nuclei.</li>
-                <li><strong>Fidelity</strong>: whether progression reflects biologically plausible ageing dynamics.</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-
-        <div class="block">
-          <h3>Benchmark Results</h3>
-          <p class="lead" style="margin-top:0;max-width:none;">We compare <span class="smallcaps">SenoFlow</span> against eleven baselines covering the major Flow Matching variant and two non-FM generators.</p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th rowspan="2">Method</th>
-                  <th colspan="3">Lung</th>
-                  <th colspan="3">Prostate</th>
-                  <th colspan="3">Skin</th>
-                </tr>
-                <tr>
-                  <th>FID&darr;</th>
-                  <th>KID&darr;</th>
-                  <th>|&rho;| &uarr;</th>
-                  <th>FID&darr;</th>
-                  <th>KID&darr;</th>
-                  <th>|&rho;| &uarr;</th>
-                  <th>FID&darr;</th>
-                  <th>KID&darr;</th>
-                  <th>|&rho;| &uarr;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td colspan="10" style="font-weight:800;color:#e06436;background:#f7efe3;">NON-FM GENERATORS</td></tr>
-                <tr><td>cVAE</td><td>71.7</td><td>44.3</td><td>2.0</td><td>78.4</td><td>49.1</td><td>3.5</td><td>65.2</td><td>39.8</td><td>4.1</td></tr>
-                <tr><td>CCDM</td><td>43.2</td><td>21.4</td><td>16.2</td><td>49.6</td><td>25.3</td><td>18.7</td><td>39.5</td><td>18.6</td><td>19.4</td></tr>
-                <tr><td colspan="10" style="font-weight:800;color:#e06436;background:#f7efe3;">FLOW MATCHING VARIANTS</td></tr>
-                <tr><td>I-CFM</td><td>85.6</td><td>56.8</td><td>30.7</td><td>92.3</td><td>61.7</td><td>28.4</td><td>78.1</td><td>51.2</td><td>32.5</td></tr>
-                <tr><td>iMF</td><td>14.2</td><td>3.7</td><td>10.8</td><td>16.5</td><td>7.1</td><td>12.1</td><td>13.1</td><td>3.2</td><td>9.6</td></tr>
-                <tr><td>MeanFlow</td><td>18.0</td><td>6.1</td><td>11.5</td><td>20.7</td><td>7.2</td><td>13.0</td><td>16.4</td><td>5.4</td><td>10.8</td></tr>
-                <tr><td>Rectified Flow</td><td>61.0</td><td>34.7</td><td>5.7</td><td>67.8</td><td>38.9</td><td>6.4</td><td>55.3</td><td>30.6</td><td>7.1</td></tr>
-                <tr><td>Noise-start CFM</td><td>36.8</td><td>17.2</td><td>57.5</td><td>41.5</td><td>19.6</td><td>54.8</td><td>33.7</td><td>15.3</td><td>55.2</td></tr>
-                <tr><td>Contrastive FM</td><td>26.2</td><td>10.8</td><td>30.7</td><td>30.4</td><td>12.7</td><td>32.3</td><td>23.8</td><td>9.5</td><td>28.9</td></tr>
-                <tr><td>LogitNorm OT-CFM</td><td>93.0</td><td>62.4</td><td>7.0</td><td>99.7</td><td>67.3</td><td>8.5</td><td>84.6</td><td>56.1</td><td>9.2</td></tr>
-                <tr><td>CellFlow</td><td>138.2</td><td>116.5</td><td>33.7</td><td>151.3</td><td>116.2</td><td>50.7</td><td>213.5</td><td>201.6</td><td>43.7</td></tr>
-                <tr><td>CellFlux</td><td>80.2</td><td>43.1</td><td>1.0</td><td>84.1</td><td>53.0</td><td>14.0</td><td>71.9</td><td>44.0</td><td>19.2</td></tr>
-                <tr style="font-weight:800;background:#fff8ee;"><td><span class="smallcaps">SenoFlow</span> (ours)</td><td>12.2</td><td>2.3</td><td>82.9</td><td>16.1</td><td>6.9</td><td>91.8</td><td>11.3</td><td>2.1</td><td>88.8</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="table-wrap" style="margin-top:14px;">
-            <table>
-              <thead>
-                <tr>
-                  <th rowspan="2">Method</th>
-                  <th colspan="2">Lung</th>
-                  <th colspan="2">Prostate</th>
-                  <th colspan="2">Skin</th>
-                </tr>
-                <tr>
-                  <th>Realism&uarr;</th>
-                  <th>Fidelity&uarr;</th>
-                  <th>Realism&uarr;</th>
-                  <th>Fidelity&uarr;</th>
-                  <th>Realism&uarr;</th>
-                  <th>Fidelity&uarr;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td colspan="7" style="font-weight:800;color:#e06436;background:#f7efe3;">NON-FM GENERATORS</td></tr>
-                <tr><td>cVAE</td><td>4</td><td>3</td><td>3</td><td>4</td><td>2</td><td>2</td></tr>
-                <tr><td>CCDM</td><td>3</td><td>1</td><td>2</td><td>3</td><td>3</td><td>2</td></tr>
-                <tr><td colspan="7" style="font-weight:800;color:#e06436;background:#f7efe3;">FLOW MATCHING VARIANTS</td></tr>
-                <tr><td>I-CFM</td><td>4</td><td>3</td><td>3</td><td>4</td><td>1</td><td>1</td></tr>
-                <tr><td>iMF</td><td>5</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td></tr>
-                <tr><td>MeanFlow</td><td>5</td><td>3</td><td>3</td><td>4</td><td>5</td><td>4</td></tr>
-                <tr><td>Rectified Flow</td><td>4</td><td>3</td><td>3</td><td>4</td><td>2</td><td>3</td></tr>
-                <tr><td>Noise-start CFM</td><td>4</td><td>4</td><td>2</td><td>3</td><td>4</td><td>4</td></tr>
-                <tr><td>Contrastive FM</td><td>4</td><td>3</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
-                <tr><td>LogitNorm OT-CFM</td><td>4</td><td>3</td><td>2</td><td>3</td><td>1</td><td>3</td></tr>
-                <tr><td>CellFlow</td><td>2</td><td>2</td><td>2</td><td>3</td><td>1</td><td>1</td></tr>
-                <tr><td>CellFlux</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>3</td></tr>
-                <tr style="font-weight:800;background:#fff8ee;"><td><span class="smallcaps">SenoFlow</span> (ours)</td><td>5</td><td>5</td><td>4</td><td>5</td><td>5</td><td>5</td></tr>
-              </tbody>
-            </table>
+          <div class="classification-body">
+            <div class="classification-workspace">
+              <h4 class="classification-panel-title">Upload Image</h4>
+              <img class="classification-patch" src="images/patch1.png" alt="Uploaded tissue patch for classification">
+              <div class="classification-legend placeholder" aria-hidden="true">
+                <img src="figures/circle-line.png" alt="">
+                <span>Senescent cell</span>
+              </div>
+              <div class="classification-actions" aria-label="Classification workflow">
+                <button class="workflow-button" type="button" data-class-action="upload">
+                  Upload
+                </button>
+                <button class="workflow-button" type="button" data-class-action="segment">
+                  Segment
+                </button>
+                <button class="workflow-button" type="button" data-class-action="classify">
+                  Classify
+                </button>
+                <button class="workflow-button" type="button" data-class-action="display">
+                  Display
+                </button>
+              </div>
+            </div>
+            <div class="classification-results">
+              <h4 class="classification-panel-title">Classification Results</h4>
+              <img class="classification-patch" src="images/patch.png" alt="Classified tissue patch with senescent cell annotations">
+              <div class="classification-legend">
+                <img src="figures/circle-line.png" alt="">
+                <span>Senescent cell</span>
+              </div>
+              <div class="classification-result-box" data-class-result>Classified senescent and normal cells will be displayed here.</div>
+              <div class="classification-result-actions">
+                <button class="workflow-button" type="button" data-class-action="refresh">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.45 5.06 1 1 0 1 0-1.86.74A6 6 0 1 1 12 6c1.3 0 2.5.42 3.48 1.13L13.8 8.8A1 1 0 0 0 14.5 10.5H20a1 1 0 0 0 1-1V4a1 1 0 1 0-2 0v2.1l-1.35.25Z"/></svg>
+                  Refresh
+                </button>
+                <button class="workflow-button" type="button" data-class-action="clear">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12ZM8 9h8v10H8V9Zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5Z"/></svg>
+                  Clear
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-
-  </main>
+</main>
 
   <script>
     window.MathJax = {
@@ -1027,29 +938,77 @@
 
     function setupRealDapiFilters() {
       const filters = Array.from(document.querySelectorAll("[data-real-filter]"));
-      const cards = Array.from(document.querySelectorAll(".crop-card[data-tissue][data-celltype]"));
+      const grid = document.querySelector("[data-real-grid]");
+      const shuffleButton = document.querySelector("[data-real-shuffle]");
 
-      if (filters.length === 0 || cards.length === 0) {
+      if (filters.length === 0 || !grid) {
         return;
       }
+
+      const realCells = [
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.158", src: "images/real%20cells/lung_epithelial/cell_h534756_score0.158.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.200", src: "images/real%20cells/lung_epithelial/cell_h514206_score0.200.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.213", src: "images/real%20cells/lung_epithelial/cell_h523075_score0.213.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.229", src: "images/real%20cells/lung_epithelial/cell_h536407_score0.229.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.231", src: "images/real%20cells/lung_epithelial/cell_h511515_score0.231.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.238", src: "images/real%20cells/lung_epithelial/cell_h538956_score0.238.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.242", src: "images/real%20cells/lung_epithelial/cell_h539195_score0.242.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.604", src: "images/real%20cells/lung_epithelial/cell_h522306_score0.604.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.620", src: "images/real%20cells/lung_epithelial/cell_h540718_score0.620.png" },
+        { tissue: "skin", tissueLabel: "Skin", celltype: "endothelial", celltypeLabel: "Endothelial", score: "0.182", src: "images/skin_endothelial_score0.182.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "macrophage", celltypeLabel: "Macrophage", score: "0.204", src: "images/lung_macrophage_score0.204.png" },
+        { tissue: "prostate", tissueLabel: "Prostate", celltype: "stromal", celltypeLabel: "Stromal", score: "0.360", src: "images/prostate_stromal_score0.360.png" },
+        { tissue: "lung", tissueLabel: "Lung", celltype: "fibroblast", celltypeLabel: "Fibroblast", score: "0.561", src: "images/lung_fibroblast_score0.561.png" },
+        { tissue: "skin", tissueLabel: "Skin", celltype: "t cell", celltypeLabel: "T cell", score: "0.695", src: "images/skin_tcell_score0.695.png" },
+        { tissue: "prostate", tissueLabel: "Prostate", celltype: "epithelial", celltypeLabel: "Epithelial", score: "0.807", src: "images/prostate_epithelial_score0.807.png" }
+      ];
 
       function selected(name) {
         const filter = filters.find(item => item.dataset.realFilter === name);
         return filter ? filter.value : "all";
       }
 
+      function shuffle(items) {
+        const result = [...items];
+        for (let i = result.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [result[i], result[j]] = [result[j], result[i]];
+        }
+        return result;
+      }
+
       function applyFilters() {
         const tissue = selected("tissue");
         const celltype = selected("celltype");
-
-        cards.forEach(card => {
-          const tissueMatch = tissue === "all" || card.dataset.tissue === tissue;
-          const celltypeMatch = celltype === "all" || card.dataset.celltype === celltype;
-          card.hidden = !(tissueMatch && celltypeMatch);
+        const filtered = realCells.filter(cell => {
+          const tissueMatch = tissue === "all" || cell.tissue === tissue;
+          const celltypeMatch = celltype === "all" || cell.celltype === celltype;
+          return tissueMatch && celltypeMatch;
         });
+        const visibleCells = [];
+        let pool = shuffle(filtered);
+        while (visibleCells.length < 8 && filtered.length > 0) {
+          if (pool.length === 0) {
+            pool = shuffle(filtered);
+          }
+          visibleCells.push(pool.pop());
+        }
+        visibleCells.sort((a, b) => Number(a.score) - Number(b.score));
+
+        grid.innerHTML = visibleCells.map(cell => `
+          <article class="crop-card" data-tissue="${cell.tissue}" data-celltype="${cell.celltype}">
+            <img src="${cell.src}" alt="Real DAPI image: ${cell.tissueLabel} ${cell.celltypeLabel}">
+            <div class="crop-meta">
+              <div class="meta-row"><span class="k">Score</span><span class="v">${cell.score}</span></div>
+            </div>
+          </article>
+        `).join("");
       }
 
       filters.forEach(filter => filter.addEventListener("change", applyFilters));
+      if (shuffleButton) {
+        shuffleButton.addEventListener("click", applyFilters);
+      }
       applyFilters();
     }
 
@@ -1096,6 +1055,32 @@
       renderSample(currentIndex);
     }
 
+    function setupClassificationWorkflow() {
+      const result = document.querySelector("[data-class-result]");
+      const buttons = Array.from(document.querySelectorAll("[data-class-action]"));
+
+      if (!result || buttons.length === 0) {
+        return;
+      }
+
+      const placeholder = "Classified senescent and normal cells will be displayed here.";
+      const messages = {
+        upload: "Default tissue patch loaded from images/patch.png.",
+        segment: "Segmentation preview prepared for nuclei in the uploaded tissue patch.",
+        classify: "Classification completed: normal and senescent cell candidates are ready.",
+        display: "Classification results are ready to display in this panel.",
+        refresh: "Classification results refreshed.",
+        clear: placeholder
+      };
+
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          const action = button.dataset.classAction;
+          result.textContent = messages[action] || placeholder;
+        });
+      });
+    }
+
     function onScroll() {
       const top = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -1138,6 +1123,7 @@
 
     setupRealDapiFilters();
     setupTrajectoryGallery();
+    setupClassificationWorkflow();
     window.addEventListener("scroll", onScroll);
     onScroll();
   </script>
